@@ -1,19 +1,16 @@
-# SiMaOke - návrh projektu
+# maCaPeLa - návrh projektu
 
-Cieľom tohto projektu je vytvoriť a natrénovať hlbokú neurónovú sieť, ktorá by bola schopná separovať hlas od hudby v hudobnom súbore obsahujúcom oboje.
+Cieľom tohto projektu je vytvoriť a natrénovať hlbokú neurónovú sieť, ktorá bude schopná separovať vokály (hlas) od hudby v hudobnom súbore, obsahujúcom oboje.
 ## Motivácia
 
-Jedným z dôvodov, prečo je separovanie hlasu zaujímavou témou, je tvorba karaoke verzií hudobných skladieb. Mnoho hudobných skladieb nemá verejne dostupnú karaoke verziu, preto je záujem o nástroje, ktoré by automatizovane vytvorili karaoke verziu z hudobného súboru, bez dodatočných informácií. V tomto prípade je cieľom _odstrániť hlas_.
+Jedným z dôvodov, prečo je separovanie hlasu zaujímavou témou, je tvorba _karaoke_ (hudba bez vokálov), resp. _a cappella_ (iba vokály) verzií hudobných skladieb. Množstvo hudobných skladieb nemá verejne dostupnú karaoke / a cappella verziu a z toho dôvodu vzniká dopyt po nástrojoch, ktoré by takúto verziu dokázali vytvoriť priamo z originálneho hudobného súboru.
 
-Serióznejším problémom je odstránenie šumu zo zvukovej nahrávky, napríklad pri menej kvalitných bezpečnostných kamerách so zvukovým záznamom. V hlučných oblastiach, napríklad pri hustej premávke, môže byť náročné na týchto nahrávkach rozpoznať, čo inkriminované osoby hovoria. Vtedy je potrebné odfiltrovať šum pozadia, aby bolo možné zreteľne počuť reč. V týchto prípadoch je cieľom _odstrániť šum_.
+Do triedy príbuzných problémov môže pritom patriť tiež problematika "čistenia" zvukových nahrávok od šumu, príp. oddelenie inej zložky zvukového signálu od pôvodnej nahrávky (napr. bicie nástroje). Tieto problémy ponechávame v kontexte realizácie nášho projektu ako otvorené možnosti, pričom sa plánujeme zamerať na už spomínanú problematiku automatizovanej tvorby _karaoke_, resp. _a cappella_ verzií existujúcich nahrávok.
 
-Tieto problémy majú svoje algoritmické riešenia [2][3], avšak typicky majú jednotlivé algoritmy svoje špecializácie a obmedzenia. Preto je zaujímavé využiť na tento problém neurónovú sieť, ktorá síce v našej práci bude pravdepodobne obmedzená na základe trénovacieho datasetu, avšak má potenciál stať sa všeobecným riešením.
-
-Našu prácu plánujeme zamerať na _odstránenie hlasu_ z nahrávky. Postupovať budeme takzvanou slepou separáciu zdrojov [1], teda sa budeme snažiť separovať jeden signál z viacerých zmiešaných signálov bez dodatočných informácií.
 
 ## Existujúce práce
 
-Separácia hlasu je zaujímavou témou v oblasti neurónových sietí, keďže existuje viacero prác využívajúcich neurónov= siete na separáciu hlasu. Príkladom je [DeepConvSep](https://github.com/MTG/DeepConvSep), kde autori z Univerzity Pompeu Fabra pomocou konvolučných neurónových sietí dokázali separovať hudobné nástroje z nahrávok klasickej hudby, ako aj hlas a nástroje z modernejšej hudby. Prácou s rovnakým účelom je [Wavenet for Music Source Separation](https://github.com/francesclluis/source-separation-wavenet), kde autori natrénovali neurónovú sieť na separáciu hlasu od hudby, ako aj jednotlivých hudobných 
+Neurónové siete predstavujú vhodný a zaujímavý nástroj pre účely tvorby modelu, schopného realizovať separáciu vokálov a hudby v rámci hudobnej nahrávky, o čom svedčí tiež existencia viacerých odborných prác tohto zamerania. Príkladom je [DeepConvSep](https://github.com/MTG/DeepConvSep), kde autori z Univerzity Pompeu Fabra pomocou konvolučných neurónových sietí dokázali separovať hudobné nástroje z nahrávok klasickej hudby, ako aj hlas a nástroje z modernejšej hudby. Prácou s rovnakým účelom je [Wavenet for Music Source Separation](https://github.com/francesclluis/source-separation-wavenet), kde autori natrénovali neurónovú sieť na separáciu hlasu od hudby, ako aj jednotlivých hudobných 
 
 ## Datasety
 
@@ -21,6 +18,7 @@ Jedným z datasetov, ktoré by sme mohli využiť, je [!!!!TODO!!!!](), ktorý p
 
 Alternatívou je pracovať so separátnymi nahrávkami hlasu a hudby, ktoré zlúčime, aj ak by šlo o inak nesúvisiace nahrávky. V tomto prípade by bolo zaujímavé zistiť, či model natrénovaný na takýchto dátach dokáže separovať hlas aj z reálnych hudobných skladieb.
 ## Vysokoúrovňový návrh
+Postupovať budeme takzvanou slepou separáciu zdrojov [1], teda sa budeme snažiť separovať jeden signál z viacerých zmiešaných signálov bez dodatočných informácií.
 
 
 ## Zdroje
