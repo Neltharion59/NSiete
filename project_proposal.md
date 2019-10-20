@@ -20,6 +20,8 @@ Na základe vykonanej evaluácie a porovnania výsledkov s architektúrou, posta
 Podobného zamerania je tiež práca Huanga a kol. [2] ([treťostranná implementácia v Tensorflow](https://github.com/andabi/music-source-separation), založená na tejto práci), v rámci ktorej autori implementovali model pre separovanie vokálov od hudby, založený na rekurentných neurónových sieťach (RNN). Podobne ako v prípade práce [1], autori využívajú techniku časovo-frekvenčného maskovania, pričom vstupom pre trénovanie modelu bol dataset [MIR-1K](https://sites.google.com/site/unvoicedsoundseparation/mir-1k) s využitím spektrálnej reprezentácie nahrávok, získanej metódou STFT s obmedzením počtu vzoriek na hodnotu 1024. Optimalizáciu modelu autori realizovali prostredníctvom Broyden-Fletcher-Goldfarb-Shannovho algortimu (L-BFGS) s obmedzením počtu trénovacích epoch na 400. Ilustrácia autormi navrhnutej architektúry poskytuje Obrázok 1 [2].
 
 ![](fig_arch.png)
+
+
 Obrázok 1: Architektúra rekurentnej neurónovej sieti podľa práce Huanga a kol. [2]
 
 V rámci evaluácie autori konštatujú, že ich model dosahuje porovnateľné výsledky s prácami príbuzného zamerania, pričom ako možnosť jeho ďalšieho využitia (resp. rozšírenia) uvádzajú separovanie hlavnej (dominantnej) melódie z pôvodnej zvukovej nahrávky.
