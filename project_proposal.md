@@ -10,28 +10,43 @@ Do triedy príbuzných problémov môže pritom patriť tiež problematika "čis
 
 ## Existujúce práce
 
-Neurónové siete predstavujú vhodný a zaujímavý nástroj pre účely tvorby modelu, schopného realizovať separáciu vokálov a hudby v rámci hudobnej nahrávky, o čom svedčí tiež existencia viacerých odborných prác tohto zamerania. Príkladom je [DeepConvSep](https://github.com/MTG/DeepConvSep), kde autori z Univerzity Pompeu Fabra pomocou konvolučných neurónových sietí dokázali separovať hudobné nástroje z nahrávok klasickej hudby, ako aj hlas a nástroje z modernejšej hudby. Prácou s rovnakým účelom je [Wavenet for Music Source Separation](https://github.com/francesclluis/source-separation-wavenet), kde autori natrénovali neurónovú sieť na separáciu hlasu od hudby, ako aj jednotlivých hudobných 
+Neurónové siete predstavujú vhodný a zaujímavý nástroj pre účely tvorby modelu, schopného realizovať separáciu vokálov a hudby v rámci hudobnej nahrávky, o čom svedčí tiež existencia viacerých existujúcich publikácií [1] tohto zamerania. Medzi najvýznamnjšie patrí práca Chandna-eho a kol. [1] v kombinácii s implementovaným softvérom [DeepConvSep](https://github.com/MTG/DeepConvSep), v rámci ktorej autori implementovali niekoľko verzií modelu na báze konvolučných neurónových sietí (CNN) s využitím techniky tzv. časovo-frekvenčného maskovania (z angl. _time-frequency masking_), schopného separovať vybrané zložky zvuku z monoaurálnych nahrávok. Tieto zložky zahŕňajú napr. hlas, basy, bicie a sprievodné nástroje v prípade využitia trénovacieho datasetu [DSD100](https://sigsep.github.io/datasets/dsd100.html), resp. vokály a hudbu v prípade modelu, natrénovanom na datasete [iKala](http://mac.citi.sinica.edu.tw/ikala/). 
+
+V rámci trénovacej fázy autori rozdelili vstupné nahrávky do 20-sekundových segmentov, realizujúc spektrálnu analýzu pomocou STFT (z angl. _Short-time Fourier Transform_) s Hanningovým okienkom veľkosti 1024 vzoriek a vzorkovacou frekvenciou na úrovni 44,1 kHz. Takto predspracované vstupné dáta autori rozdelili na dávky (z angl. _batches_), reprezentujúce modelovaný časový úsek, pričom tieto dáta poslúžili ako vstup pre neurónovú sieť s trénovaním v rámci 30 epoch. Z pohľadu infraštruktúry autori využili aplikačný rámec Lasagne, pričom proces trénovania bol akcelerovaný vďaka využitiu grafickej karty Nvidia GeForce Titan X. 
+
+Na základe vykonanej evaluácie a porovnania výsledkov s architektúrou, postavenou na viacvrstvom perceptróne (MLP) autori konštatujú, že ich riešenie dosahuje veľmi dobré výsledky, pričom dochádza k významnej redukcii času, potrebného na trénovanie modelu. Ako priestor na ďalšie zlepšenie presnosti modelu autori uvádzajú možnosť využitia sekundárnych informácií o vstupných dátach, zahŕňajúcich napr. fundamentálne frekvencie jednotlivých zdrojov (zložiek) zvuku pre separovanie či tzv. _midi_ informácie.
+
+
+Podobného zamerania je tiež práca Huanga a kol. [2] ([treťostranná implementácia](https://github.com/andabi/music-source-separation), založená na tejto práci), v rámci ktorej autori implementovali model pre separovanie vokálov od hudby, založený na rekurentných neurónových sieťach (RNN). Podobne ako v prípade práce [1], autori využívajú techniku časovo-frekvenčného maskovania, pričom vstupom pre trénovanie modelu bol dataset [MIR-1K](https://sites.google.com/site/unvoicedsoundseparation/mir-1k) s využitím spektrálnej reprezentácie nahrávok, získanej metódou STFT s obmedzením počtu vzoriek na hodnotu 1024. Optimalizáciu modelu autori realizovali prostredníctvom Broyden-Fletcher-Goldfarb-Shannovho algortimu (L-BFGS) s obmedzením počtu trénovacích epoch na 400. Ilustrácia autormi navrhnutej architektúry poskytuje Obrázok 1 [2].
+
+![Obrázok 1: Architektúra rekurentnej neurónovej sieti podľa práce Huagna a kol. [2]](fig_arch.png)
+
+V rámci evaluácie autori konštatujú, že ich model dosahuje porovnateľné výsledky s prácami príbuzného zamerania, pričom ako možnosť jeho ďalšieho využitia (resp. rozšírenia) uvádzajú separovanie hlavnej (dominantnej) melódie z pôvodnej zvukovej nahrávky.
+ 
+Analogickým príkladom môže byť tiež práca Simpsona a kol. [3] ([treťostranná implementácia v Pythone](https://github.com/bachsh/deep-karaoke-maker); [pôvodná v Matlabe](https://github.com/jaidevd/deep_kareoke_source_separation)), ktorá prezentuje model pre separovanie vokálov od hudby, založený na konvolučnej neurónovej sieti, pričom autori sa špecificky zamerali práce na problematiku automatizovanej tvorby karaoke verzií existujúcich piesní.
 
 ## Datasety
 
-Jedným z datasetov, ktoré by sme mohli využiť, je [!!!!TODO!!!!](), ktorý príhodne poskytuje hudobné súbory, ktoré majú hlas a pozadie uložené v oddelených kanáloch, ktoré pri trénovaní vieme zlúčiť do jedného.
+Pri výbere vhodného datasetu pre trénovanie nášho modelu plánujeme vychádzať z existujúcuch prác [1,2,3], opísaných v predchádzajúcej stati. Jednou z možností je využitie datasetu [MIR-1K](https://sites.google.com/site/unvoicedsoundseparation/mir-1k), ktorý poskytuje celkovo _1000_ nahrávok s celkovou dĺžkou _133 minút_, v rámci ktorých sú vokály a hudobný sprievod atomicky vyčlenené do jednotlivých kanálov (ľavý, pravý), čo nám pskytuje dobrú flexibilitu v kontexte riešenia nami vytýčenej úlohy (separáciu jednotlivých kanálov možno realzovať napr. pomocou programu [Audacity].(https://www.audacityteam.org/). Súčasťou tohto datasetu sú tiež plynulou rečou prečítané texty jednotlivých piesní ich interpretmi či rôzne meta-informácie (anotácie hudobných nahrávok). Veľkosť tohto datasetu činí približne 1,2 GB (formát _wave_).
 
-Alternatívou je pracovať so separátnymi nahrávkami hlasu a hudby, ktoré zlúčime, aj ak by šlo o inak nesúvisiace nahrávky. V tomto prípade by bolo zaujímavé zistiť, či model natrénovaný na takýchto dátach dokáže separovať hlas aj z reálnych hudobných skladieb.
+Vhodnou alternatívou môže byť tiež dataset [DSD100](https://sigsep.github.io/datasets/dsd100.html), obsahujúci celkovo 100 hudobných nahrávok, pričom pre každú z nich je poskytnutá pôvodoná verzia, ako aj súbor s vyčlenenými bicími nástrojmi, basmi, vokálmi a zvyškom hudobného sprievodu. Plná verzia datasetu má celkovú veľkosť približne 14 GB (opätovne formát _wave_).
+
+Za zmienku stojí tiež podobný dataset [iKala](http://mac.citi.sinica.edu.tw/ikala/), ktorý však pre naše účely pravdepodobne využiteľný nebude, nakoľko od roku 2017 nie je verejne dostupný.
+
+Zaujímavou alternatívou môže byť tiež práca so separátnymi nahrávkami hlasu a hudby, ktoré je možné jednoducho zlúčiť, pričom by nemuselo nutne ísť o súvisiace nahrávky. V tomto prípade by bolo zaujímavé zistiť, či model natrénovaný na takýchto dátach dokáže separovať hlas aj z reálnych hudobných skladieb s presnosťou, ktorú možno považovať za akceptovateľnú. 
+
 ## Vysokoúrovňový návrh
 Postupovať budeme takzvanou slepou separáciu zdrojov [1], teda sa budeme snažiť separovať jeden signál z viacerých zmiešaných signálov bez dodatočných informácií.
 
 
 ## Zdroje
 
+[1] CHANDNA, P. et al. Monoaural Audio Source Separation Using Deep Convolutional Neural Networks. In: _International Conference on Latent Variable Analysis and Signal Separation_ [online]. Barcelona: Universitat Pompeu Fabra, 2017. Dostupné na internete: <http://mtg.upf.edu/node/3680>.
+
+[2] HUANG, P. et al. Singing-voice Separation from monaural recordings. In: _International Society for Music Information Retrieval Conference (ISMIR)_ [online]. Illinois: University of Illinois, 2014. Dostupné na internete: <https://posenhuang.github.io/papers/DRNN_ISMIR2014.pdf%0D>.
+
+[3] SIMPSON, A.J.R. et al. Deep Karaoke: Extracting Vocals from Musical Mixtures Using a Convolutional Deep Neural Network. In: _Proceedings of the International Conference on Latent Variable Analysis and Signal Separation (LVA/ICA)_ [online]. 2015. s. 429–436. Dostupné na internete: <https://arxiv.org/ftp/arxiv/papers/1504/1504.04658.pdf>.
+
 [1] "Biomedical Signal and Image Processing", Spring 2008.
 
 [Source](http://www.mit.edu/~gari/teaching/6.555/LECTURE_NOTES/ch15_bss.pdf)
-
-[2] P. T. Selvan and V. Vaishnavi, "Singing pitch extraction and voice separation from music accompaniment using trend estimation and tandem algorithm," 2013 IEEE International Conference ON Emerging Trends in Computing, Communication and Nanotechnology (ICECCN), Tirunelveli, 2013, pp. 232-235. doi: 10.1109/ICE-CCN.2013.6528499
-
-[Source](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6528499&isnumber=6528464)
-
-[3] G. -. Jang, Te-Won Lee and Yung-Hwan Oh, "Single-channel signal separation using time-domain basis functions," in IEEE Signal Processing Letters, vol. 10, no. 6, pp. 168-171, June 2003.
-doi: 10.1109/LSP.2003.811630
-
-[Source](http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1198666&isnumber=26980)
