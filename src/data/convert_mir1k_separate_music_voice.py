@@ -17,7 +17,7 @@ i = 1
 file_count = len(file_names)
 for file_name in file_names:
     print(f'Converting file {i}/{file_count}: {file_name}...')
-    i += 1
+    i = i + 1
 
     sample_rate, data = wavfile.read(input_directory_name + file_name)
 
