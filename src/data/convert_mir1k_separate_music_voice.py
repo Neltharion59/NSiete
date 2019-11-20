@@ -6,11 +6,11 @@ import scipy.io.wavfile as wavfile
 
 __location__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__)))
-__location__ = "\\".join(__location__.split("\\")[:-2])
+# __location__ = "\\".join(__location__.split("\\")[:-2])
 
-input_directory_name = __location__ + "\\data\\MIR-1K\\Wavfile\\"
-output_directory_name_music = __location__ + "\\data\\MIR-1K\\Wavfile_music\\"
-output_directory_name_voice = __location__ + "\\data\\MIR-1K\\Wavfile_voice\\"
+input_directory_name = __location__ + "/../../data/MIR-1K/Wavfile/"
+output_directory_name_music = __location__ + "/../../data/MIR-1K/Wavfile_music/"
+output_directory_name_voice = __location__ + "/../../data/MIR-1K/Wavfile_voice/"
 file_names = [file_name for file_name in os.listdir(input_directory_name) if file_name[-4:] is not ".wav"]
 
 i = 1

@@ -7,12 +7,12 @@ from runpy import run_path
 
 __location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
-__location__ = "\\".join(__location__.split("\\")[:-2])
+# __location__ = "\\".join(__location__.split("\\")[:-2])
 
-input_directory_name_stereo = __location__ + "\\data\\MIR-1K\\Wavfile\\"
-input_directory_name_mono = __location__ + "\\data\\MIR-1K\\Wavfile_mono\\"
-input_directory_name_voice = __location__ + "\\data\\MIR-1K\\Wavfile_voice\\"
-input_directory_name_music = __location__ + "\\data\\MIR-1K\\Wavfile_music\\"
+input_directory_name_stereo = __location__ + "/../../data/MIR-1K/Wavfile/"
+input_directory_name_mono = __location__ + "/../../data/MIR-1K/Wavfile_mono/"
+input_directory_name_voice = __location__ + "/../../data/MIR-1K/Wavfile_voice/"
+input_directory_name_music = __location__ + "/../../data/MIR-1K/Wavfile_music/"
 
 config = run_path(__location__ + "\\config.py")
 
