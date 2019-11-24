@@ -1,6 +1,11 @@
 import os
 import numpy as np
+import tensorflow as tf
 from runpy import run_path
+from model import RecurrentNeuralNetwork
+from tensorflow import keras
+
+# tf.logging.set_verbosity(tf.logging.ERROR)
 
 # Get absolute location of this file
 __location__ = os.path.realpath(
@@ -22,32 +27,46 @@ test_set_labels = []
 train_set_samples = []
 train_set_labels = []
 
-# for sample_name in test_set_names:
-#     sample, sample_label, sample_rate = data_reading["read_sample_file"](sample_name)
-#     test_set_samples.append(sample)
-#     test_set_labels.append(sample_label)
-# for sample_name in train_set_names:
-#     sample, sample_label, sample_rate = data_reading["read_sample_file"](sample_name)
-#     train_set_samples.append(sample)
-#     train_set_labels.append(sample_label)
+for sample_name in test_set_names:
+    sample, sample_label, sample_rate = data_reading["read_sample_file"](sample_name)
+    test_set_samples = test_set_samples + sample
+    test_set_labels = test_set_labels + sample_label
+
+for sample_name in train_set_names:
+    sample, sample_label, sample_rate = data_reading["read_sample_file"](sample_name)
+    train_set_samples = train_set_samples + sample
+    train_set_labels = train_set_labels + sample_label
 
 # convert to np.array
-train_set_samples = np.array(train_set_samples)
-train_set_labels = np.array(train_set_labels)
-test_set_labels = np.array(test_set_labels)
-test_set_samples = np.array(test_set_samples)
+#train_set_samples = np.array(train_set_samples)
+# train_set_labels = np.array(train_set_labels)
+# test_set_labels = np.array(test_set_labels)
+# test_set_samples = np.array(test_set_samples)
 
-# print(test_set_labels.shape)
-# print(train_set_samples.shape)
+# train_set_labels = np.array([np.array(x) for x in train_set_labels])
+# test_set_labels = np.array([np.array(x) for x in test_set_labels])
 
-print(data_reading["read_sample_file"]("abjones_2_01.wav")[1].shape)
+model = RecurrentNeuralNetwork()
 
-stft = util_tools["get_spectrogram"](data_reading["read_sample_file"]("abjones_2_01.wav")[0])
+callbacks = [ # callbacks for logging
+    keras.callbacks.TensorBoard(
+        log_dir=os.path.join("logs", "pretrained_non-trainable_bidirectional"),
+        histogram_freq=1,
+        profile_batch=0)]
 
+model.compile(
+    optimizer='adam',
+    loss='mean_squared_error',
+    metrics=['accuracy'])
 
-# print(stft.shape)
-# print(stft)
+# print(test_set_samples)
+# print(test_set_labels)
 
-# print(util_tools["get_magnitude"](stft))
-
-
+model.fit(
+    x=tf.cast(train_set_samples, tf.float64),
+    y=tf.cast(train_set_labels, tf.float64),
+    batch_size=10,
+    epochs=1,
+    # callbacks=callbacks,
+    validation_data=(tf.cast(test_set_samples, tf.float64), tf.cast(test_set_labels, tf.float64)),
+    steps_per_epoch=10)
