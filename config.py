@@ -5,3 +5,6 @@
 separation_target = "music"
 # How many samples to work with during this run
 sample_count = 500
+# Percentage of how big part of dataset should be the testing set (the rest is training set)
+# E.g. "0.3" means that 30% will be test set, 70% will be train set
+test_ratio = 0.3

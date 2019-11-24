@@ -6,7 +6,7 @@ from pydub import AudioSegment
 
 __location__ = os.path.realpath(
         os.path.join(os.getcwd(), os.path.dirname(__file__)))
-# __location__ = "\\".join(__location__.split("\\")[:-2])
+#__location__ = __location__.replace('\\', "/")
 
 input_directory_name = __location__ + "/../../data/MIR-1K/Wavfile/"
 output_directory_name = __location__ + "/../../data/MIR-1K/Wavfile_mono/"
