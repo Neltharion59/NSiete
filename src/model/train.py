@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from runpy import run_path
+
 # Get absolute location of this file
 __location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -21,14 +22,14 @@ test_set_labels = []
 train_set_samples = []
 train_set_labels = []
 
-for sample_name in test_set_names:
-    sample, sample_label = data_reading["read_sample_file"](sample_name)
-    test_set_samples.append(sample)
-    test_set_labels.append(sample_label)
-for sample_name in train_set_names:
-    sample, sample_label = data_reading["read_sample_file"](sample_name)
-    train_set_samples.append(sample)
-    train_set_labels.append(sample_label)
+# for sample_name in test_set_names:
+#     sample, sample_label, sample_rate = data_reading["read_sample_file"](sample_name)
+#     test_set_samples.append(sample)
+#     test_set_labels.append(sample_label)
+# for sample_name in train_set_names:
+#     sample, sample_label, sample_rate = data_reading["read_sample_file"](sample_name)
+#     train_set_samples.append(sample)
+#     train_set_labels.append(sample_label)
 
 # convert to np.array
 train_set_samples = np.array(train_set_samples)
@@ -39,5 +40,14 @@ test_set_samples = np.array(test_set_samples)
 # print(test_set_labels.shape)
 # print(train_set_samples.shape)
 
-print(util_tools["get_spectrogram"](train_set_samples[0]))
+print(data_reading["read_sample_file"]("abjones_2_01.wav")[1].shape)
+
+stft = util_tools["get_spectrogram"](data_reading["read_sample_file"]("abjones_2_01.wav")[0])
+
+
+# print(stft.shape)
+# print(stft)
+
+# print(util_tools["get_magnitude"](stft))
+
 

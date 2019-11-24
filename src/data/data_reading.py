@@ -4,6 +4,7 @@ import os
 import random
 import scipy.io.wavfile as wavfile
 import numpy as np
+import librosa
 from runpy import run_path
 
 __location__ = os.path.realpath(
@@ -27,7 +28,7 @@ def initialize_sample_pool():
     return work_file_names
 
 def read_sample_file(file_name):
-    data_merged = wavfile.read(input_directory_name_mono + file_name)[1]
-    data_separate = wavfile.read((input_directory_name_voice if config["separation_target"] == "voice" else input_directory_name_music) + file_name)[1]
+    data_merged, sample_rate = librosa.load(input_directory_name_mono + file_name)
+    data_separate = librosa.load((input_directory_name_voice if config["separation_target"] == "voice" else input_directory_name_music) + file_name)[0]
 
-    return np.array(data_merged), np.array(data_separate)
+    return np.array(data_merged), np.array(data_separate), sample_rate
