@@ -62,11 +62,14 @@ model.compile(
 # print(test_set_samples)
 # print(test_set_labels)
 
+print(test_set_samples[1])
+print(asas)
+
 model.fit(
     x=tf.cast(train_set_samples, tf.float64),
     y=tf.cast(train_set_labels, tf.float64),
     batch_size=10,
     epochs=1,
-    # callbacks=callbacks,
+    callbacks=callbacks,
     validation_data=(tf.cast(test_set_samples, tf.float64), tf.cast(test_set_labels, tf.float64)),
     steps_per_epoch=10)

@@ -4,7 +4,7 @@
 # E.g. "music" means we will filter out voice and keep the music.
 separation_target = "music"
 # How many samples to work with during this run
-sample_count = 10
+sample_count = 100
 # Percentage of how big part of dataset should be the testing set (the rest is training set)
 # E.g. "0.3" means that 30% will be test set, 70% will be train set
 test_ratio = 0.5

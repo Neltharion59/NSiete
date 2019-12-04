@@ -2,12 +2,6 @@ from librosa import stft
 import numpy as np
 
 def get_spectrogram(X, fs=16000, wd_size=1024, seg_size=1024, overlap=0, pad=True):
-    # print(X)
-
-    # if(type(X) is not np.ndarray):
-    #     X = np.array(X)
-    #     print(X)
-    # print(type(X))
 
     return stft(X, n_fft=wd_size, hop_length=wd_size)
     # return signal.stft(array, fs=fs, nfft=nfft, nperseg=nperseg, noverlap=noverlap, padded=padded)

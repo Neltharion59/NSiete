@@ -15,9 +15,9 @@ config = run_path(__location__ + "/../../config.py")
 class RecurrentNeuralNetwork(Model):
     def __init__(self):
         super(RecurrentNeuralNetwork, self).__init__(name='recurrent_neural_network')
-        #self.preprocessing_layer = PreprocessingLayer()
-        #self.decomposing_layer = DecomposingLayer()
-        #self.composing_layer = ComposingLayer()
+        # self.preprocessing_layer = PreprocessingLayer()
+        # self.decomposing_layer = DecomposingLayer()
+        # self.composing_layer = ComposingLayer()
         self.masking_layer = MaskingLayer()
 
         self.inner_layers = [
@@ -39,22 +39,18 @@ class RecurrentNeuralNetwork(Model):
            modified_chunks.append(tmp)
         out = self.composing_layer(modified_chunks)
 
-        for layer in self.inner_layers:
-            # print(x)
-            x = layer(x)
-        x = self.masking_layer(x)
         return x
 
-# class PreprocessingLayer(Layer):
-#     def __init__(self):
-#         super(PreprocessingLayer, self).__init__()
+class PreprocessingLayer(Layer):
+    def __init__(self):
+        super(PreprocessingLayer, self).__init__()
 
-#     def call(self, input_mono):
-#         spectrogram = util_tools["get_spectrogram"](input_mono)
-#         magnitude = util_tools["get_magnitude"](spectrogram)
-#         # phase = util_tools["get_phase"](spectrogram)
+    def call(self, input_mono):
+        spectrogram = util_tools["get_spectrogram"](input_mono)
+        magnitude = util_tools["get_magnitude"](spectrogram)
+        # phase = util_tools["get_phase"](spectrogram)
 
-#         return magnitude  #, phase
+        return magnitude  #, phase
 
 
 class DecomposingLayer(Layer):
@@ -92,7 +88,5 @@ class MaskingLayer(Layer):
         super(MaskingLayer, self).__init__()
 
     def call(self, prediction, orig_mixed):
-        # output = prediction / (prediction + np.finfo(float).eps) * orig_mixed
-        # return output
-
-        return "AAAAAAA"
+        output = prediction / (prediction + np.finfo(float).eps) * orig_mixed
+        return output
