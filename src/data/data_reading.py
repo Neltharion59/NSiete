@@ -52,6 +52,20 @@ def read_sample_file(file_name):
 
     return magnitude_m, magnitude_s, sample_rate
 
+
+def read_sample_file_val(file_name):
+    data_merged, sample_rate = librosa.load(input_directory_name_mono + file_name)
+    data_separate = librosa.load((input_directory_name_voice if config["separation_target"] == "voice" else input_directory_name_music) + file_name)[0]
+
+    chunk_size = config["chunk_size"]
+    chunk_count = int(np.floor(len(data_merged) / chunk_size))
+
+    spectrogram_m = util_tools["get_spectrogram"](data_merged)
+    magnitude_m = util_tools["get_magnitude"](spectrogram_m)
+    phase = util_tools["get_phase"](spectrogram_m)
+
+    return magnitude_m, phase, sample_rate
+
     # # ----- #
 
     # phase_m = util_tools["get_phase"](spectrogram_m)

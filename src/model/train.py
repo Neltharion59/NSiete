@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import tensorflow as tf
+import scipy.io.wavfile as wavfile
 from runpy import run_path
 from model import ConvolutionalNeuralNetwork
 from tensorflow import keras
@@ -77,12 +78,29 @@ model.compile(
 
 print('Fittinf...')
 # print(train_set_samples[1])
-print(train_set_samples.shape)
+print(train_set_samples[0].shape)
+print(train_set_labels[0].shape)
 
 model.fit(
     x=train_set_samples,
-    y=train_set_samples,
-    batch_size=5,
-    epochs=20,
+    y=train_set_labels,
+    batch_size=1,
+    epochs=5,
     callbacks=callbacks,
-    validation_data=(test_set_samples, test_set_samples))
+    validation_data=(test_set_samples, test_set_labels))
+
+file_name = "abjones_2_01.wav"
+sample, phase, sample_rate = data_reading["read_sample_file"](file_name)
+
+print(sample.shape)
+sample = np.expand_dims(sample, axis=2)
+
+res = model.predict(sample)
+print(res.shape)
+res = np.squeeze(res, axis=2)
+print(res.shape)
+
+out = util_tools["construct_audio"](res, phase)
+
+path_out = __location__ + "/../../data/out/"
+wavfile.write(path_out + file_name, sample_rate, out)

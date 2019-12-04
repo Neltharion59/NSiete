@@ -2,7 +2,7 @@
 
 # What kind of info we want to separate. Options: "music", "voice".
 # E.g. "music" means we will filter out voice and keep the music.
-separation_target = "music"
+separation_target = "voice"
 # How many samples to work with during this run
 sample_count = 10
 # Percentage of how big part of dataset should be the testing set (the rest is training set)

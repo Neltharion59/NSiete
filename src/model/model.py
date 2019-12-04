@@ -2,7 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers, Model
-from tensorflow.keras.layers import Layer
+from tensorflow.keras.layers import Layer, Average
 from runpy import run_path
 
 __location__ = os.path.realpath(
@@ -15,24 +15,25 @@ class ConvolutionalNeuralNetwork(Model):
 
         self.inner_layers = [
             layers.Conv1D(
-                filters=50,
-                kernel_size=5,
+                filters=30,
+                kernel_size=10,
                 padding='same',
                 activation='sigmoid'
             ),
             layers.Conv1D(
-                filters=50,
-                kernel_size=5,
+                filters=30,
+                kernel_size=10,
                 padding='same',
                 activation='relu'
             ),
             layers.Conv1D(
-                filters=50,
+                filters=30,
                 kernel_size=5,
                 padding='same',
                 activation='relu'
             )
         ]
+
         # self.flatten =  Flatten()
         # self.dense = Dense(
         #         units=input_dim,
