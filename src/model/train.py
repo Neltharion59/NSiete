@@ -2,7 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf
 from runpy import run_path
-from model import RecurrentNeuralNetwork
+from model import ConvolutionalNeuralNetwork
 from tensorflow import keras
 
 # tf.logging.set_verbosity(tf.logging.ERROR)
@@ -29,24 +29,39 @@ train_set_labels = []
 
 for sample_name in test_set_names:
     sample, sample_label, sample_rate = data_reading["read_sample_file"](sample_name)
-    test_set_samples = test_set_samples + sample
-    test_set_labels = test_set_labels + sample_label
+    for i in range(sample.shape[1]):
+        test_set_samples.append(sample[:,i])
+        test_set_labels.append(sample_label[:,i])
+
+    # print(sample)
+    # test_set_samples.append(sample)
+    # # test_set_samples = np.append(test_set_samples, sample)
+    # test_set_labels.append(sample_label)
+    # # test_set_labels = np.append(test_set_labels, sample_label)
 
 for sample_name in train_set_names:
     sample, sample_label, sample_rate = data_reading["read_sample_file"](sample_name)
-    train_set_samples = train_set_samples + sample
-    train_set_labels = train_set_labels + sample_label
+    for i in range(sample.shape[1]):
+        train_set_samples.append(sample[:,i])
+        train_set_labels.append(sample_label[:,i])
+    
+    # train_set_samples.append(sample)
+    # train_set_samples = np.append(train_set_samples, sample)
+    # train_set_labels.append(sample_label)
+    # train_set_labels = np.append(train_set_labels, sample_label)
 
 # convert to np.array
-#train_set_samples = np.array(train_set_samples)
-# train_set_labels = np.array(train_set_labels)
-# test_set_labels = np.array(test_set_labels)
-# test_set_samples = np.array(test_set_samples)
+train_set_samples = np.array(train_set_samples)
+train_set_labels = np.array(train_set_labels)
+test_set_labels = np.array(test_set_labels)
+test_set_samples = np.array(test_set_samples)
 
-# train_set_labels = np.array([np.array(x) for x in train_set_labels])
-# test_set_labels = np.array([np.array(x) for x in test_set_labels])
+train_set_samples = np.expand_dims(train_set_samples, axis=2)
+train_set_labels = np.expand_dims(train_set_labels, axis=2)
+test_set_samples = np.expand_dims(test_set_samples, axis=2)
+test_set_labels = np.expand_dims(test_set_labels, axis=2)
 
-model = RecurrentNeuralNetwork()
+model = ConvolutionalNeuralNetwork()
 
 callbacks = [ # callbacks for logging
     keras.callbacks.TensorBoard(
@@ -54,22 +69,20 @@ callbacks = [ # callbacks for logging
         histogram_freq=1,
         profile_batch=0)]
 
+print('Compiling...')
 model.compile(
     optimizer='adam',
     loss='mean_squared_error',
     metrics=['accuracy'])
 
-# print(test_set_samples)
-# print(test_set_labels)
-
-print(test_set_samples[1])
-print(asas)
+print('Fittinf...')
+# print(train_set_samples[1])
+print(train_set_samples.shape)
 
 model.fit(
-    x=tf.cast(train_set_samples, tf.float64),
-    y=tf.cast(train_set_labels, tf.float64),
-    batch_size=10,
-    epochs=1,
+    x=train_set_samples,
+    y=train_set_samples,
+    batch_size=5,
+    epochs=20,
     callbacks=callbacks,
-    validation_data=(tf.cast(test_set_samples, tf.float64), tf.cast(test_set_labels, tf.float64)),
-    steps_per_epoch=10)
+    validation_data=(test_set_samples, test_set_samples))

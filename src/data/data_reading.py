@@ -3,9 +3,11 @@
 import os
 import random
 import scipy.io.wavfile as wavfile
+import soundfile as sf
 import numpy as np
 import librosa
 from runpy import run_path
+from pydub import AudioSegment
 
 __location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -31,25 +33,36 @@ def initialize_sample_pool():
     return work_file_names
 
 def read_sample_file(file_name):
+    # data_merged = AudioSegment.from_wav(input_directory_name_mono + file_name)
+    # sample_rate=16000
+    # data_separate = AudioSegment.from_wav(input_directory_name_mono + file_name)
+
+    # print(np.array(data_merged.raw_data))
+
     data_merged, sample_rate = librosa.load(input_directory_name_mono + file_name)
     data_separate = librosa.load((input_directory_name_voice if config["separation_target"] == "voice" else input_directory_name_music) + file_name)[0]
 
     chunk_size = config["chunk_size"]
     chunk_count = int(np.floor(len(data_merged) / chunk_size))
 
-    # data_merged = data_merged[:int(chunk_size * chunk_count)]
-    # data_separate = data_separate[:int(chunk_size * chunk_count)]
-
     spectrogram_m = util_tools["get_spectrogram"](data_merged)
-    magnitude_m = util_tools["get_magnitude"](spectrogram_m).tolist()
-    chunks_m = []
-    for i in range(chunk_count):
-        chunks_m.append(magnitude_m[i*chunk_size:(i+1)*chunk_size])
-
+    magnitude_m = util_tools["get_magnitude"](spectrogram_m)
     spectrogram_s = util_tools["get_spectrogram"](data_separate)
-    magnitude_s = util_tools["get_magnitude"](spectrogram_s).tolist()
-    chunks_s = []
-    for i in range(chunk_count):
-        chunks_s.append(magnitude_s[i*chunk_size:(i+1)*chunk_size])
+    magnitude_s = util_tools["get_magnitude"](spectrogram_s)
 
-    return chunks_m, chunks_s, sample_rate
+    return magnitude_m, magnitude_s, sample_rate
+
+    # # ----- #
+
+    # phase_m = util_tools["get_phase"](spectrogram_m)
+    # res = util_tools["construct_audio"](magnitude_m, phase_m)
+    # # print(data_merged.shape)
+    # # print(res.shape)
+    # # print(sample_rate)
+
+    # path_out = __location__ + "/../../data/out/"
+    # wavfile.write(path_out + file_name, sample_rate, res)
+
+    # exit()
+
+    # # ----- #
