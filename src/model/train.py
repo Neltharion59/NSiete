@@ -76,7 +76,7 @@ model.compile(
     loss='mean_squared_error',
     metrics=['accuracy'])
 
-print('Fittinf...')
+print('Fitting...')
 # print(train_set_samples[1])
 print(train_set_samples[0].shape)
 print(train_set_labels[0].shape)
@@ -85,12 +85,12 @@ model.fit(
     x=train_set_samples,
     y=train_set_labels,
     batch_size=1,
-    epochs=5,
+    epochs=10,
     callbacks=callbacks,
     validation_data=(test_set_samples, test_set_labels))
 
 file_name = "abjones_2_01.wav"
-sample, phase, sample_rate = data_reading["read_sample_file"](file_name)
+sample, phase, sample_rate = data_reading["read_sample_file_val"](file_name)
 
 print(sample.shape)
 sample = np.expand_dims(sample, axis=2)

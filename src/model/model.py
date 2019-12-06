@@ -15,20 +15,32 @@ class ConvolutionalNeuralNetwork(Model):
 
         self.inner_layers = [
             layers.Conv1D(
-                filters=30,
-                kernel_size=10,
-                padding='same',
-                activation='sigmoid'
-            ),
-            layers.Conv1D(
-                filters=30,
+                filters=70,
                 kernel_size=10,
                 padding='same',
                 activation='relu'
             ),
             layers.Conv1D(
-                filters=30,
-                kernel_size=5,
+                filters=70,
+                kernel_size=10,
+                padding='same',
+                activation='relu'
+            ),
+            layers.Conv1D(
+                filters=70,
+                kernel_size=10,
+                padding='same',
+                activation='relu'
+            ),
+            layers.Conv1D(
+                filters=70,
+                kernel_size=10,
+                padding='same',
+                activation='relu'
+            ),
+            layers.Conv1D(
+                filters=1,
+                kernel_size=10,
                 padding='same',
                 activation='relu'
             )
