@@ -38,6 +38,12 @@ class ConvolutionalNeuralNetwork(Model):
                 padding='same',
                 activation='relu'
             ),
+            layers.MaxPooling1D(
+                pool_size=2,
+                strides=1,
+                padding='same',
+                data_format='channels_last'
+            ),
             layers.Conv1D(
                 filters=1,
                 kernel_size=10,

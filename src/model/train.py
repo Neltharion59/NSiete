@@ -5,6 +5,7 @@ import scipy.io.wavfile as wavfile
 from runpy import run_path
 from model import ConvolutionalNeuralNetwork
 from tensorflow import keras
+from datetime import datetime
 
 # tf.logging.set_verbosity(tf.logging.ERROR)
 
@@ -63,12 +64,23 @@ test_set_samples = np.expand_dims(test_set_samples, axis=2)
 test_set_labels = np.expand_dims(test_set_labels, axis=2)
 
 model = ConvolutionalNeuralNetwork()
+#model.load_weights('./checkpoints/my_checkpoint')
+
+now = datetime.now()
+dt_string = now.strftime("%d/%m/%Y_%H:%M:%S")
+checkpoint_path = "training_{dt_string}/cp-{epoch:04d}.ckpt"
 
 callbacks = [ # callbacks for logging
     keras.callbacks.TensorBoard(
         log_dir=os.path.join("logs", "pretrained_non-trainable_bidirectional"),
         histogram_freq=1,
-        profile_batch=0)]
+        profile_batch=0),
+    keras.callbacks.ModelCheckpoint(
+        filepath=checkpoint_path, 
+        verbose=1, 
+        save_weights_only=True,
+        period=5)
+    ]
 
 print('Compiling...')
 model.compile(
@@ -104,3 +116,4 @@ out = util_tools["construct_audio"](res, phase)
 
 path_out = __location__ + "/../../data/out/"
 wavfile.write(path_out + file_name, sample_rate, out)
+
