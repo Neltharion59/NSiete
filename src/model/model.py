@@ -15,25 +15,7 @@ class ConvolutionalNeuralNetwork(Model):
 
         self.inner_layers = [
             layers.Conv1D(
-                filters=70,
-                kernel_size=10,
-                padding='same',
-                activation='relu'
-            ),
-            layers.Conv1D(
-                filters=70,
-                kernel_size=10,
-                padding='same',
-                activation='relu'
-            ),
-            layers.Conv1D(
-                filters=70,
-                kernel_size=10,
-                padding='same',
-                activation='relu'
-            ),
-            layers.Conv1D(
-                filters=70,
+                filters=15,
                 kernel_size=10,
                 padding='same',
                 activation='relu'
@@ -45,21 +27,74 @@ class ConvolutionalNeuralNetwork(Model):
                 data_format='channels_last'
             ),
             layers.Conv1D(
-                filters=1,
+                filters=30,
                 kernel_size=10,
                 padding='same',
                 activation='relu'
-            )
+            ),
+            layers.MaxPooling1D(
+                pool_size=2,
+                strides=1,
+                padding='same',
+                data_format='channels_last'
+            ),
+            layers.Conv1D(
+                filters=60,
+                kernel_size=10,
+                padding='same',
+                activation='relu'
+            ),
+            layers.MaxPooling1D(
+                pool_size=2,
+                strides=1,
+                padding='same',
+                data_format='channels_last'
+            ),
+            # layers.Conv1D(
+            #     filters=80,
+            #     kernel_size=10,
+            #     padding='same',
+            #     activation='relu'
+            # ),
+            # layers.MaxPooling1D(
+            #     pool_size=2,
+            #     strides=1,
+            #     padding='same',
+            #     data_format='channels_last'
+            # ),
+            # layers.Conv1D(
+            #     filters=45,
+            #     kernel_size=10,
+            #     padding='same',
+            #     activation='relu'
+            # ),
+            # layers.MaxPooling1D(
+            #     pool_size=2,
+            #     strides=1,
+            #     padding='same',
+            #     data_format='channels_last'
+            # ),
+            # layers.Conv1D(
+            #     filters=50,
+            #     kernel_size=10,
+            #     padding='same',
+            #     activation='relu'
+            # ),
+            # layers.Flatten(),
+            layers.Dense(
+                units=1024,
+                activation='relu'
+            ),
         ]
 
         # self.flatten =  Flatten()
         # self.dense = Dense(
-        #         units=input_dim,
+        #         units=input_dim,  
         #         activation='relu'),
 
     def call(self, x):
         for layer in self.inner_layers:
-            x = layer(x)
+            x = layer(x) 
 
         # x = flatten(x)
         # x = dense(x)

@@ -64,11 +64,23 @@ test_set_samples = np.expand_dims(test_set_samples, axis=2)
 test_set_labels = np.expand_dims(test_set_labels, axis=2)
 
 model = ConvolutionalNeuralNetwork()
-#model.load_weights('./checkpoints/my_checkpoint')
+model.load_weights('training_06_12_2019_20_56_58/cp-{epoch:04d}.ckpt'.format(epoch=2))
 
 now = datetime.now()
-dt_string = now.strftime("%d/%m/%Y_%H:%M:%S")
-checkpoint_path = "training_{dt_string}/cp-{epoch:04d}.ckpt"
+dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
+checkpoint_path = "training_" + dt_string + "/cp-{epoch:04d}.ckpt"
+
+file_name = "marisa_hq.wav"
+sample, phase, sample_rate = data_reading["read_sample_file_val"](file_name)
+predict_samples = []
+
+for i in range(sample.shape[1]):
+    predict_samples.append(sample[:,i])
+
+predict_samples = np.array(predict_samples)
+predict_samples = np.expand_dims(predict_samples, axis=2)
+print(predict_samples.shape)
+print(train_set_samples.shape)
 
 callbacks = [ # callbacks for logging
     keras.callbacks.TensorBoard(
@@ -79,7 +91,7 @@ callbacks = [ # callbacks for logging
         filepath=checkpoint_path, 
         verbose=1, 
         save_weights_only=True,
-        period=5)
+        period=2)
     ]
 
 print('Compiling...')
@@ -96,24 +108,27 @@ print(train_set_labels[0].shape)
 model.fit(
     x=train_set_samples,
     y=train_set_labels,
-    batch_size=1,
+    batch_size=2,
     epochs=10,
     callbacks=callbacks,
     validation_data=(test_set_samples, test_set_labels))
 
-file_name = "abjones_2_01.wav"
-sample, phase, sample_rate = data_reading["read_sample_file_val"](file_name)
+# file_name = "abjones_2_01.wav"
+# sample, phase, sample_rate = data_reading["read_sample_file_val"](file_name)
 
-print(sample.shape)
-sample = np.expand_dims(sample, axis=2)
+# print(sample.shape)
+# sample = np.expand_dims(sample, axis=2)
 
-res = model.predict(sample)
+res = model.predict(predict_samples)
+res = np.swapaxes(res, 0, 1)
 print(res.shape)
-res = np.squeeze(res, axis=2)
+res = np.average(res, axis=2)
 print(res.shape)
+# res = np.squeeze(res, axis=2)
+# print(res.shape)
 
 out = util_tools["construct_audio"](res, phase)
 
 path_out = __location__ + "/../../data/out/"
-wavfile.write(path_out + file_name, sample_rate, out)
+wavfile.write(path_out + file_name + "_" + dt_string + ".wav", sample_rate, out)
 
