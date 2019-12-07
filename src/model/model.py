@@ -15,7 +15,7 @@ class ConvolutionalNeuralNetwork(Model):
 
         self.inner_layers = [
             layers.Conv1D(
-                filters=15,
+                filters=25,
                 kernel_size=10,
                 padding='same',
                 activation='relu'
@@ -27,19 +27,7 @@ class ConvolutionalNeuralNetwork(Model):
                 data_format='channels_last'
             ),
             layers.Conv1D(
-                filters=30,
-                kernel_size=10,
-                padding='same',
-                activation='relu'
-            ),
-            layers.MaxPooling1D(
-                pool_size=2,
-                strides=1,
-                padding='same',
-                data_format='channels_last'
-            ),
-            layers.Conv1D(
-                filters=60,
+                filters=50,
                 kernel_size=10,
                 padding='same',
                 activation='relu'
@@ -51,7 +39,7 @@ class ConvolutionalNeuralNetwork(Model):
                 data_format='channels_last'
             ),
             # layers.Conv1D(
-            #     filters=80,
+            #     filters=100,
             #     kernel_size=10,
             #     padding='same',
             #     activation='relu'
@@ -63,7 +51,7 @@ class ConvolutionalNeuralNetwork(Model):
             #     data_format='channels_last'
             # ),
             # layers.Conv1D(
-            #     filters=45,
+            #     filters=60,
             #     kernel_size=10,
             #     padding='same',
             #     activation='relu'
@@ -81,10 +69,10 @@ class ConvolutionalNeuralNetwork(Model):
             #     activation='relu'
             # ),
             # layers.Flatten(),
-            layers.Dense(
-                units=1024,
-                activation='relu'
-            ),
+            # layers.Dense(
+            #     units=1024,
+            #     activation='relu'
+            # ),
         ]
 
         # self.flatten =  Flatten()

@@ -64,7 +64,7 @@ test_set_samples = np.expand_dims(test_set_samples, axis=2)
 test_set_labels = np.expand_dims(test_set_labels, axis=2)
 
 model = ConvolutionalNeuralNetwork()
-model.load_weights('training_06_12_2019_20_56_58/cp-{epoch:04d}.ckpt'.format(epoch=2))
+# model.load_weights('training_07_12_2019_13_54_32/cp-{epoch:04d}.ckpt'.format(epoch=2))
 
 now = datetime.now()
 dt_string = now.strftime("%d_%m_%Y_%H_%M_%S")
@@ -108,8 +108,8 @@ print(train_set_labels[0].shape)
 model.fit(
     x=train_set_samples,
     y=train_set_labels,
-    batch_size=2,
-    epochs=10,
+    batch_size=1,
+    epochs=12,
     callbacks=callbacks,
     validation_data=(test_set_samples, test_set_labels))
 
@@ -119,10 +119,12 @@ model.fit(
 # print(sample.shape)
 # sample = np.expand_dims(sample, axis=2)
 
+print('Predicting...')
+
 res = model.predict(predict_samples)
 res = np.swapaxes(res, 0, 1)
 print(res.shape)
-res = np.average(res, axis=2)
+res = np.median(res, axis=2)
 print(res.shape)
 # res = np.squeeze(res, axis=2)
 # print(res.shape)
