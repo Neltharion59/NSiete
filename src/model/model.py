@@ -84,7 +84,4 @@ class ConvolutionalNeuralNetwork(Model):
         for layer in self.inner_layers:
             x = layer(x) 
 
-        # x = flatten(x)
-        # x = dense(x)
-
         return x

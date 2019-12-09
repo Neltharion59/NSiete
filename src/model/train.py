@@ -7,8 +7,6 @@ from model import ConvolutionalNeuralNetwork
 from tensorflow import keras
 from datetime import datetime
 
-# tf.logging.set_verbosity(tf.logging.ERROR)
-
 # Get absolute location of this file
 __location__ = os.path.realpath(
             os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -35,22 +33,11 @@ for sample_name in test_set_names:
         test_set_samples.append(sample[:,i])
         test_set_labels.append(sample_label[:,i])
 
-    # print(sample)
-    # test_set_samples.append(sample)
-    # # test_set_samples = np.append(test_set_samples, sample)
-    # test_set_labels.append(sample_label)
-    # # test_set_labels = np.append(test_set_labels, sample_label)
-
 for sample_name in train_set_names:
     sample, sample_label, sample_rate = data_reading["read_sample_file"](sample_name)
     for i in range(sample.shape[1]):
         train_set_samples.append(sample[:,i])
         train_set_labels.append(sample_label[:,i])
-    
-    # train_set_samples.append(sample)
-    # train_set_samples = np.append(train_set_samples, sample)
-    # train_set_labels.append(sample_label)
-    # train_set_labels = np.append(train_set_labels, sample_label)
 
 # convert to np.array
 train_set_samples = np.array(train_set_samples)
@@ -113,12 +100,6 @@ model.fit(
     callbacks=callbacks,
     validation_data=(test_set_samples, test_set_labels))
 
-# file_name = "abjones_2_01.wav"
-# sample, phase, sample_rate = data_reading["read_sample_file_val"](file_name)
-
-# print(sample.shape)
-# sample = np.expand_dims(sample, axis=2)
-
 print('Predicting...')
 
 res = model.predict(predict_samples)
@@ -127,7 +108,6 @@ print(res.shape)
 res = np.median(res, axis=2)
 print(res.shape)
 # res = np.squeeze(res, axis=2)
-# print(res.shape)
 
 out = util_tools["construct_audio"](res, phase)
 
